@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <title>To-Do list manager</title>
+  </head>
+  <body>
+    <h1>To-Do list manager</h1>
+    <p>
+      Here you can add new lists and check off al lthe items that you comlete
+    </p>
+    <tal:block repeat="todolist context/todolists">
+      <h2 tal:content="todolist/title">List title</h2>
+      <p tal:content="todolist/description">List description</p>
+      <ul>
+        <li tal:repeat="litem todolist/items"
+          tal:content="item">
+          Item 1
+        </li>
+        <li tal:replace="nothing">Item 2</li>
+        <li tal:replace="hothing">Item 3</li>
+      </ul>
+    </tal:block>
+  </body>
+</html>
