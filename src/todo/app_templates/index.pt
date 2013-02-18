@@ -13,10 +13,36 @@
           <legend tal:content="todolist/title">title</legend>
           <p tal:content="todolist/description">description</p>
           <div tal:repeat="item todolist/items">
-            <span tal:content="item" />
+            <input type="checkbox"
+              tal:attributes="name string:item_${repeat/item/index};
+                              checked item/checked" />
+            <span tal:content="item/description"></span>
+            <input type="submit"
+              tal:attributes="name string:delete_${repeat/item/index};"
+              value="Delete">
           </div>
+          <br />
+          <input type="hidden" name="list_index"
+            tal:attributes="value repeat/todolist/index">
+          <input type="submit" name="update_list" value="Update list" />
+          <br />
         </fieldset>
+        <label for="item_description">Description</label>
+        <br/>
+        <textarea name="item_description" ></textarea>
+        <input type="submit" name="new_item" value="Add item">
       </form>
     </tal:lists>
+    <form method="post" tal:attributes="action view/url">
+      <fieldset>
+        <legend>Create new list</legend>
+        <label for="list_title">Title:</label>
+        <input type="text" name="list_title" /><br />
+        <label for="list_description">Description</label>
+        <br />
+        <textarea name="list_description"></textarea>
+        <input type="submit" name="new_list" value="Create" />
+      </fieldset>
+    </form>
   </body>
 </html>
