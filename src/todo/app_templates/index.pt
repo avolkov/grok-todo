@@ -5,18 +5,18 @@
   <body>
     <h1>To-Do list manager</h1>
     <p>
-      Here you can add new lists and check off al lthe items that you comlete
+      Here you can add new lists and check off all the items that you comlete
     </p>
-    <tal:block repeat="todolist context/todolists">
-      <h2 tal:content="todolist/title">List title</h2>
-      <p tal:content="todolist/description">List description</p>
-      <ul>
-        <li tal:repeat="item todolist/items"
-          tal:content="item">
-          Item 1
-        </li>
-
-      </ul>
-    </tal:block>
+    <tal:lists repeat="todolist context/todolists">
+      <form method="post" tal:attributes="action view/url">
+        <fieldset>
+          <legend tal:content="todolist/title">title</legend>
+          <p tal:content="todolist/description">description</p>
+          <div tal:repeat="item todolist/items">
+            <span tal:content="item" />
+          </div>
+        </fieldset>
+      </form>
+    </tal:lists>
   </body>
 </html>
