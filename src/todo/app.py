@@ -5,6 +5,18 @@ from todo import resource
 class Todo(grok.Application, grok.Container):
     todolists = []
 
+class Check(grok.View):
+
+    def update(self, list_index, item_index):
+        self.div_id = 'div_item_%s_%s' % (list_index, item_index)
+        list_index = int(list_index)
+        item_index = int(item_index)
+        items = self.context.todolists[listinidex]['items']
+        items[item_index]['checked'] = not items[ite_index]['checked']
+
+    def render(self):
+        return self.div_id
+
 class Index(grok.View):
     def update(self):
         form = self.request.form
