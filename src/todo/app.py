@@ -1,6 +1,10 @@
 import grok
 
+from zope import interface
+from zope import schema
+
 from todo import resource
+
 
 class Todo(grok.Application, grok.Container):
     def __init__(self):
@@ -16,6 +20,16 @@ class Todo(grok.Application, grok.Container):
 
     def delete_list(self, list):
         del self[list]
+
+class IProject(interface.Interface):
+    name = schema.TextLine(title=u'Name', required=True)
+    kind = schema.Choice(title=u'Kind of project', \
+                            values=['person', 'business'])
+    description = schema.Text(title=u"Description")
+
+class AddProject(grok.Form):
+    grok.context(Todo)
+    form_fields = grok.AutoFields(IProject)
 
 class TodoList(grok.Container):
     def __init__(self, list_title, list_description):
