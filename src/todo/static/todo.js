@@ -15,7 +15,7 @@ function hideControls() {
     moveDoneToBottom();
 }
 
-function checkItem(url) {
+function getRequest(url,callback) {
     req = false;
     if(window.XMLHttpRequest && !(window.ActiveXObject)) {
         try {
@@ -35,7 +35,7 @@ function checkItem(url) {
         }
     }
     if(req) {
-        req.onreadystatechange = processReqChange;
+        req.onreadystatechange = callback;
         req.open("GET", url, true);
         req.send("");
     }
@@ -78,4 +78,42 @@ function moveDoneToBottom(){
             item=getPreviousItem(clone1);
         }
     }
+}
+
+function editTitle() {
+    document.getElementById("apptitle").onclick="";
+    textvalue = document.getElementById("apptitle").innerHTML;
+    document.getElementById("apptitle").innerHTML='<input type="text" size="60" id="newtitle" value="'+textvalue+'" onkeydown="saveTitle(event)" onblur="restoreTitle(\''+textvalue+'\')">';
+    document.getElementById("newtitle").focus();
+}
+
+function saveTitle(e) {
+    numcheck=document.all?window.event.keyCode:e.keyCode;
+    if (numcheck==27) {
+        document.getElementById("newtitle").blur();
+        return;
+    }
+    if (numcheck!=13) {
+        return;
+    }
+    newtitle=document.getElementById("newtitle").value;
+    getRequest(settitleurl+'?title='+escape(newtitle),processSaveTitle);
+}
+
+function processSaveTitle() {
+    if (req.readyState == 4) {
+        if (req.status == 200) {
+            newtitle=req.responseText;
+            document.getElementById("apptitle").innerHTML=newtitle;
+            document.getElementById("apptitle").onclick=editTitle;
+        } else {
+            alert("There was a problem setting the title:\n" +
+                req.statusText);
+        }
+    }
+}
+
+function restoreTitle(oldtitle) {
+    document.getElementById("apptitle").innerHTML=oldtitle;
+    document.getElementById("apptitle").onclick=editTitle;
 }
